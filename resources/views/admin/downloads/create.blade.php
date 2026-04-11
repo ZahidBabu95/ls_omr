@@ -21,9 +21,10 @@
             </div>
 
             <div>
-                <label class="block text-sm font-bold text-slate-700 mb-2">Upload File (PDF/DOCX/JPG/PNG)</label>
-                <input type="file" name="file" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                @error('file') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                <label class="block text-sm font-bold text-slate-700 mb-2">Upload File(s)</label>
+                <input type="file" name="files[]" multiple required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                <p class="text-xs text-slate-500 mt-2">You can select multiple files at once. They will be zipped into a single package.</p>
+                @error('files') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
             </div>
 
             <div class="pt-4">

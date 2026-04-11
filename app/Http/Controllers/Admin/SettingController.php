@@ -18,7 +18,16 @@ class SettingController extends Controller
     {
         $data = $request->except('_token');
         
+        if ($request->hasFile('favicon')) {
+            $file = $request->file('favicon');
+            $filename = 'favicon_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $data['favicon'] = 'uploads/' . $filename;
+        }
+
         foreach ($data as $key => $value) {
+            if ($request->hasFile($key) && $key !== 'favicon') continue;
+            if (is_file($value)) continue;
             Setting::updateOrCreate(
                 ['key' => $key],
                 ['value' => $value ?? '']

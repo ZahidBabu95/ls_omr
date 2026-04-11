@@ -21,8 +21,9 @@ class LandingController extends Controller
         $faqs = Faq::orderBy('order_index')->get();
         $downloads = Download::all();
         $testimonials = Testimonial::orderBy('order_index')->get();
+        $omrTemplates = \App\Models\OmrTemplate::orderBy('order_index')->get();
         
-        return view('welcome', compact('settings', 'features', 'plans', 'faqs', 'downloads', 'testimonials'));
+        return view('welcome', compact('settings', 'features', 'plans', 'faqs', 'downloads', 'testimonials', 'omrTemplates'));
     }
 
     public function storeLead(Request $request)
@@ -43,6 +44,6 @@ class LandingController extends Controller
     public function downloadFile(Download $download)
     {
         $download->increment('download_count');
-        return \Illuminate\Support\Facades\Storage::download($download->file_path);
+        return \Illuminate\Support\Facades\Storage::disk('public')->download($download->file_path);
     }
 }

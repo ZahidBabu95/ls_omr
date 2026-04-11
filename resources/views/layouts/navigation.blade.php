@@ -48,6 +48,11 @@
             Downloads
         </a>
 
+        <a href="{{ route('admin.templates.index') }}" class="flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group {{ request()->routeIs('admin.templates.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:bg-slate-50 hover:text-blue-600 font-medium' }}">
+            <svg class="w-5 h-5 mr-3 shrink-0 {{ request()->routeIs('admin.templates.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            OMR Templates
+        </a>
+
         <a href="{{ route('admin.testimonials.index') }}" class="flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group {{ request()->routeIs('admin.testimonials.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:bg-slate-50 hover:text-blue-600 font-medium' }}">
             <svg class="w-5 h-5 mr-3 shrink-0 {{ request()->routeIs('admin.testimonials.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
             Testimonials

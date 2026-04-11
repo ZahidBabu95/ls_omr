@@ -6,7 +6,12 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'AmarSchool OMR') }}</title>
-        <link rel="icon" href="https://amarschool.co/wp-content/uploads/2024/04/cropped-logo-32x32.png" sizes="32x32">
+        @php $faviconSetting = \App\Models\Setting::where('key','favicon')->value('value'); @endphp
+        @if($faviconSetting)
+            <link rel="icon" href="{{ asset($faviconSetting) }}" sizes="32x32">
+        @else
+            <link rel="icon" href="https://amarschool.co/wp-content/uploads/2024/04/cropped-logo-32x32.png" sizes="32x32">
+        @endif
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">

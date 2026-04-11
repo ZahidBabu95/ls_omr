@@ -30,6 +30,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('settings', [SettingController::class, 'store'])->name('settings.store');
     Route::resource('downloads', DownloadController::class);
     Route::resource('testimonials', TestimonialController::class);
+    Route::resource('templates', \App\Http\Controllers\Admin\OmrTemplateController::class);
 });
 
 Route::middleware('auth')->group(function () {

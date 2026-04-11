@@ -24,18 +24,32 @@ class DownloadController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'file' => 'required|file|max:10240', // 10MB max
+            'files' => 'required|array',
+            'files.*' => 'file|max:10240', // 10MB max per file
         ]);
 
-        $downloadsPath = $request->file('file')->store('downloads', 'public');
+        $zipFileName = 'downloads/' . uniqid('sample_omr_') . '.zip';
+        $fullZipPath = storage_path('app/public/' . $zipFileName);
+
+        if (!file_exists(storage_path('app/public/downloads'))) {
+            @mkdir(storage_path('app/public/downloads'), 0755, true);
+        }
+
+        $zip = new \ZipArchive();
+        if ($zip->open($fullZipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+            foreach ($request->file('files') as $file) {
+                $zip->addFile($file->getPathname(), $file->getClientOriginalName());
+            }
+            $zip->close();
+        }
 
         Download::create([
             'title' => $validated['title'],
-            'file_path' => $downloadsPath,
+            'file_path' => $zipFileName,
             'download_count' => 0
         ]);
 
-        return redirect()->route('admin.downloads.index')->with('success', 'Downloadable file added successfully.');
+        return redirect()->route('admin.downloads.index')->with('success', 'Downloadable package added successfully.');
     }
 
     public function edit(Download $download)
@@ -47,16 +61,32 @@ class DownloadController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'file' => 'nullable|file|max:10240',
+            'files' => 'nullable|array',
+            'files.*' => 'file|max:10240',
         ]);
 
         $data = ['title' => $validated['title']];
 
-        if ($request->hasFile('file')) {
+        if ($request->hasFile('files')) {
             if ($download->file_path && Storage::disk('public')->exists($download->file_path)) {
                 Storage::disk('public')->delete($download->file_path);
             }
-            $data['file_path'] = $request->file('file')->store('downloads', 'public');
+            
+            $zipFileName = 'downloads/' . uniqid('sample_omr_') . '.zip';
+            $fullZipPath = storage_path('app/public/' . $zipFileName);
+
+            if (!file_exists(storage_path('app/public/downloads'))) {
+                @mkdir(storage_path('app/public/downloads'), 0755, true);
+            }
+
+            $zip = new \ZipArchive();
+            if ($zip->open($fullZipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+                foreach ($request->file('files') as $file) {
+                    $zip->addFile($file->getPathname(), $file->getClientOriginalName());
+                }
+                $zip->close();
+            }
+            $data['file_path'] = $zipFileName;
         }
 
         $download->update($data);

@@ -6,6 +6,13 @@
     <title>{{ $settings['hero_title'] ?? 'AmarSchool OMR - Next-Gen Scanning' }}</title>
     
     <meta name="description" content="Optical Mark Recognition software designed for schools and businesses. Accurate scanning, fast processing, and comprehensive analytics.">
+    <!-- Dynamic Favicon -->
+    @php $faviconSetting = \App\Models\Setting::where('key','favicon')->value('value'); @endphp
+    @if($faviconSetting)
+        <link rel="icon" href="{{ asset($faviconSetting) }}" sizes="32x32">
+    @else
+        <link rel="icon" href="https://amarschool.co/wp-content/uploads/2024/04/cropped-logo-32x32.png" sizes="32x32">
+    @endif
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,16 +31,66 @@
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(226, 232, 240, 0.8);
         }
+        
+        /* Premium Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Glow Effect Classes */
+        .magnetic-btn {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden relative selection:bg-blue-200">
     
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-nav transition-all duration-300 py-4 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <a href="https://amarschool.co/" class="flex items-center gap-2" target="_blank">
-                <img src="https://amarschool.co/wp-content/uploads/2024/04/logo.png" alt="AmarSchool" class="h-10 md:h-12 w-auto object-contain">
-            </a>
+    <!-- Antigravity Magical Glow -->
+    <div id="magic-cursor-glow" class="pointer-events-none fixed inset-0 z-[1] mix-blend-multiply opacity-50 transition-opacity duration-300" style="background: radial-gradient(circle 600px at 50% 50%, rgba(59, 130, 246, 0.12), transparent 40%);"></div>
+    <div id="magic-cursor-glow-2" class="pointer-events-none fixed inset-0 z-[0] mix-blend-multiply opacity-40 transition-opacity duration-500" style="background: radial-gradient(circle 800px at 50% 50%, rgba(99, 102, 241, 0.1), transparent 50%);"></div>
+
+    <!-- Header Wrapper -->
+    <header class="fixed w-full z-50 transition-all duration-300">
+        <!-- Topbar -->
+        <div class="bg-slate-900 border-b border-slate-800 text-slate-300 hidden lg:block">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-2.5 text-xs font-medium tracking-wide">
+                <div class="flex items-center gap-6">
+                    <span class="flex items-center gap-2 select-none">
+                        <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        {{ $settings['contact_address'] ?? 'Mirpur DOHS, Dhaka 1216' }}
+                    </span>
+                    <a href="mailto:{{ $settings['contact_email'] ?? 'hello@amarschool.co' }}" class="flex items-center gap-2 hover:text-white transition-colors">
+                        <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        {{ $settings['contact_email'] ?? 'hello@amarschool.co' }}
+                    </a>
+                </div>
+                <div class="flex items-center gap-6">
+                    <span class="flex items-center gap-2 select-none">
+                        <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        {{ $settings['office_hours'] ?? 'Office Hours: 8:00 AM – 7:45 PM' }}
+                    </span>
+                    <a href="tel:{{ $settings['contact_phone'] ?? '+8801716282884' }}" class="flex items-center gap-2 font-bold text-white hover:text-blue-400 transition-colors">
+                        <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        {{ $settings['contact_phone'] ?? '+88 01716 282 884' }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="w-full glass-nav transition-all duration-300 py-3 md:py-4 shadow-sm relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <a href="https://amarschool.co/" class="flex items-center gap-2" target="_blank">
+                    <img src="https://amarschool.co/wp-content/uploads/2024/04/logo.png" alt="AmarSchool" class="h-10 md:h-12 w-auto object-contain">
+                </a>
             <div class="hidden md:flex space-x-8 items-center text-sm font-semibold text-slate-600">
                 <a href="#problem" class="hover:text-blue-600 transition-colors">Why OMR?</a>
                 <a href="#features" class="hover:text-blue-600 transition-colors">Features</a>
@@ -47,22 +104,22 @@
                     </button>
                     <!-- Dropdown Panel -->
                     <div class="absolute top-12 -left-4 w-60 bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 p-2 z-50">
-                        <a href="#downloads" class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors group/item">
-                            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 group-hover/item:scale-105 transition-transform">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-800 text-sm">Mobile Scanner</h4>
-                                <p class="text-xs text-slate-500 mt-0.5">Android & iOS App</p>
-                            </div>
-                        </a>
-                        <a href="#downloads" class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors group/item mt-1">
+                        <a href="https://omrservice.amarschool.co/desktop-app/LSOMR_Setup.exe" class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors group/item mt-1">
                             <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 group-hover/item:scale-105 transition-transform">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             </div>
                             <div>
                                 <h4 class="font-bold text-slate-800 text-sm">Desktop Software</h4>
-                                <p class="text-xs text-slate-500 mt-0.5">Windows & Mac OS</p>
+                                <p class="text-xs text-slate-500 mt-0.5">Windows Setup</p>
+                            </div>
+                        </a>
+                        <a href="#omr-templates" class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors group/item mt-1 delay-75">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 group-hover/item:scale-105 transition-transform">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">OMR Templates</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">Design Gallery</p>
                             </div>
                         </a>
                         <div class="h-px bg-slate-100 my-2 mx-3"></div>
@@ -88,54 +145,123 @@
                 @else
                     <a href="{{ route('login') }}" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Log in</a>
                 @endauth
-                <a href="#contact" class="hidden md:inline-flex px-5 py-2.5 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 transition-all">Start Free Demo</a>
+                <a href="https://amarschool.co/contact-us/" target="_blank" class="hidden md:inline-flex px-5 py-2.5 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 transition-all">Contact Us</a>
             </div>
         </div>
-    </nav>
+        </nav>
+    </header>
 
     <!-- Hero Section -->
     <main class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-b from-blue-50/80 to-white">
-        <!-- Abstract Shapes -->
-        <div class="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div class="absolute top-40 right-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <!-- Abstract Shapes & Dynamic Colorful Blobs -->
+        <div class="absolute top-10 -left-10 w-96 h-96 bg-fuchsia-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse transition-all duration-1000 ease-in-out"></div>
+        <div class="absolute top-40 -right-10 w-96 h-96 bg-cyan-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse delay-1000 transition-all duration-1000"></div>
+        <div class="absolute -bottom-32 left-1/3 w-[500px] h-[500px] bg-blue-500 rounded-full mix-blend-multiply filter blur-[120px] opacity-30 transition-all duration-1000"></div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-8">
-                <span class="w-2 h-2 rounded-full bg-blue-600"></span>
-                Smarter, Faster Examiner
-            </div>
-            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-slate-900 leading-tight">
-                {{ $settings['hero_title'] ?? 'Automate Your MCQ Exam' }}<br>
-                <span class="text-blue-600">Checking in Seconds</span>
-            </h1>
-            <p class="mt-4 max-w-2xl text-lg md:text-xl text-slate-600 mx-auto mb-10 leading-relaxed font-medium">
-                No more manual checking. Save hours with our smart OMR solution designed to eliminate human error and accelerate results.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="px-8 py-4 rounded-2xl bg-blue-600 text-white font-bold hover:shadow-[0_8px_30px_rgb(37,99,235,0.3)] hover:-translate-y-1 transition-all">Start Free Demo</a>
-                <a href="#downloads" class="px-8 py-4 rounded-2xl bg-white text-blue-600 font-bold border-2 border-blue-100 hover:border-blue-300 hover:bg-blue-50 transition-all flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    Download Sample Sheet
-                </a>
-            </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                <!-- Left: Content -->
+                <div class="text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
+                        Smarter, Faster Examiner
+                    </div>
+                    <h1 class="text-4xl md:text-6xl lg:text-[4rem] font-extrabold tracking-tight mb-6 text-slate-900 leading-[1.1]">
+                        {{ $settings['hero_title'] ?? 'Automate Your MCQ Exam' }}<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Checking in Seconds</span>
+                    </h1>
+                    <p class="mt-4 text-lg md:text-xl text-slate-600 mb-10 leading-relaxed font-medium max-w-lg">
+                        No more manual checking. Save hours with our smart OMR solution designed to eliminate human error and accelerate results.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 mb-14">
+                        <a href="https://amarschool.co/" target="_blank" class="px-8 py-4 rounded-2xl bg-blue-600 text-white font-bold hover:shadow-[0_10px_40px_rgba(37,99,235,0.4)] hover:-translate-y-1 transition-all text-center">Learn More</a>
+                        <a href="#downloads" class="px-8 py-4 rounded-2xl bg-white text-slate-700 font-bold border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            Sample Sheet
+                        </a>
+                    </div>
+                    
+                    <!-- Trust Badges -->
+                    <div class="pt-8 border-t border-slate-200/80">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-5">Trusted by 150+ Institutes</p>
+                        <div class="flex flex-wrap gap-8 opacity-60 grayscale hover:grayscale-0 transition-duration-500">
+                            <span class="text-xl font-bold font-outfit text-slate-800 flex items-center gap-2"><span class="w-4 h-4 bg-blue-500 rounded-sm inline-block shadow-sm"></span>EduSchool+</span>
+                            <span class="text-xl font-bold font-outfit text-slate-800 flex items-center gap-2"><span class="w-4 h-4 bg-emerald-500 rounded-full inline-block shadow-sm"></span>AcademyX</span>
+                            <span class="text-xl font-bold font-outfit text-slate-800 flex items-center gap-2"><div class="w-4 h-4 bg-rose-500 rotate-45 inline-block shadow-sm"></div>GlobalInst</span>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Trust Badges -->
-            <div class="mt-16 pt-10 border-t border-slate-200/60 max-w-3xl mx-auto">
-                <p class="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-6">Trusted by 150+ Schools & Universities</p>
-                <div class="flex flex-wrap justify-center gap-8 md:gap-12 opacity-60 grayscale hover:grayscale-0 transition-all">
-                    <!-- Replace with real logos -->
-                    <span class="text-xl font-bold font-outfit text-slate-700">EduSchool+</span>
-                    <span class="text-xl font-bold font-outfit text-slate-700">National Academy</span>
-                    <span class="text-xl font-bold font-outfit text-slate-700">TechInst.</span>
-                    <span class="text-xl font-bold font-outfit text-slate-700">Global University</span>
+                <!-- Right: Infographic/Dashboard Combo -->
+                <div class="relative w-full h-[500px] lg:h-[600px] flex items-center justify-center perspective-1000 mt-10 lg:mt-0">
+                    <!-- Base Decorative Glow -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-blue-200/50 to-indigo-100/50 rounded-[3rem] transform rotate-3 scale-105 opacity-80 blur-xl"></div>
+                    
+                    <!-- Infographic Window -->
+                    <div class="absolute inset-3 bg-white rounded-[2rem] shadow-2xl border border-white/80 transform -rotate-1 relative z-10 overflow-hidden flex flex-col">
+                        <!-- Tiny Mac window header -->
+                        <div class="h-10 border-b border-slate-100 bg-slate-50/80 flex items-center px-5 gap-2 shrink-0 backdrop-blur-md">
+                            <div class="w-3 h-3 rounded-full bg-rose-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                            <div class="ml-auto text-[10px] font-medium text-slate-400 uppercase tracking-widest">OMR Dashboard</div>
+                        </div>
+                        
+                        <!-- Inner Mockup / Infographic Dashboard -->
+                        <div class="p-5 flex-1 flex flex-col gap-5 bg-slate-50/50 relative">
+                            <!-- Top Analytics Row -->
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 transition-transform hover:-translate-y-1">
+                                    <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-2">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Sheets</div>
+                                    <div class="text-xl font-extrabold text-slate-800">12k+</div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 transition-transform hover:-translate-y-1">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-2">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Speed</div>
+                                    <div class="text-xl font-extrabold text-slate-800">0.2s<span class="text-xs text-slate-400 font-medium">/sh</span></div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 transition-transform hover:-translate-y-1 relative overflow-hidden">
+                                    <div class="absolute right-0 top-0 w-12 h-12 bg-purple-100 rounded-bl-full -z-10"></div>
+                                    <div class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center mb-2">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Accuracy</div>
+                                    <div class="text-xl font-extrabold text-slate-800">99.9%</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Middle Section (Pulse scanner graphic) -->
+                            <div class="flex-1 bg-white rounded-2xl border border-slate-100 shadow-sm p-2 relative overflow-hidden flex items-center justify-center group">
+                                <div class="absolute inset-x-0 w-full top-1/3 h-0.5 bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.8)] z-20 flex justify-center animate-[pulse_2s_ease-in-out_infinite]">
+                                    <div class="absolute w-full h-24 bg-gradient-to-b from-blue-400/20 to-transparent top-0 transform -translate-y-full"></div>
+                                </div>
+                                <img src="{{ asset('images/hero_dashboard.png') }}" class="object-cover object-top opacity-90 w-full h-full rounded-xl mix-blend-multiply transition-transform duration-700 group-hover:scale-105" alt="OMR Dashboard Chart" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'250\' viewBox=\'0 0 400 250\'%3E%3Crect width=\'400\' height=\'250\' fill=\'%23f8fafc\'/%3E%3Cpath d=\'M50 200 Q100 100 150 170 T250 130 T350 190\' fill=\'none\' stroke=\'%23e2e8f0\' stroke-width=\'6\' stroke-linecap=\'round\'/%3E%3Ccircle cx=\'150\' cy=\'170\' r=\'8\' fill=\'%233b82f6\'/%3E%3Ccircle cx=\'250\' cy=\'130\' r=\'8\' fill=\'%233b82f6\'/%3E%3C/svg%3E'">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Avatars & Widgets Outwards -->
+                    <!-- Floating Widgets Outwards -->
+                    <!-- Top Left Floating Status Widget -->
+                    <div class="absolute left-2 md:-left-12 top-10 md:top-36 bg-white/90 backdrop-blur-md px-5 py-4 rounded-2xl shadow-2xl border border-white/50 z-20 flex items-center gap-4 transition-transform hover:scale-105 duration-300">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100/80 text-emerald-600 flex items-center justify-center shadow-inner">
+                            <span class="relative flex h-4 w-4">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span>
+                            </span>
+                        </div>
+                        <div>
+                            <div class="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest mb-0.5">Engine Status</div>
+                            <div class="text-sm font-bold text-slate-800">Online & Ready</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Dashboard Mockup Image -->
-        <div class="max-w-6xl mx-auto mt-20 px-4 sm:px-6 relative group">
-            <div class="absolute inset-x-10 -bottom-10 h-1/2 bg-gradient-to-t from-white to-transparent z-20"></div>
-            <img src="{{ asset('images/hero_dashboard.png') }}" alt="App Dashboard" class="relative rounded-2xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] border border-slate-200 z-10 mx-auto transform transition-all duration-700 group-hover:-translate-y-2 w-full max-w-5xl">
         </div>
     </main>
 
@@ -143,8 +269,8 @@
     <section id="problem" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">Why Traditional Checking Fails</h2>
-                <p class="text-slate-600 max-w-2xl mx-auto text-lg">The manual grading process is broken, causing stress for teachers and delayed results for students.</p>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">{{ $settings['problem_title'] ?? 'Why Traditional Checking Fails' }}</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto text-lg">{{ $settings['problem_subtitle'] ?? 'The manual grading process is broken, causing stress for teachers and delayed results for students.' }}</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -273,38 +399,183 @@
     </section>
 
     <!-- Pricing -->
-    <section id="pricing" class="py-24 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">Transparent Pricing Plans</h2>
-                <p class="text-slate-600 max-w-2xl mx-auto text-lg">Choose a plan that fits your institution's size and examination frequency.</p>
+    <section id="pricing" class="py-24 bg-slate-50 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 text-sm font-semibold mb-4">
+                    <span class="w-2 h-2 rounded-full bg-indigo-600"></span> Pricing
+                </div>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">OMR Solution Pricing Plans</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto text-lg">(For Non-ERP Clients)</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 max-w-5xl mx-auto">
-                @foreach($plans as $plan)
-                <div class="p-8 rounded-3xl bg-white border border-slate-200 text-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all duration-300 flex flex-col relative overflow-hidden group">
-                    @if($loop->iteration == 2)
-                        <div class="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-bl-xl">POPULAR</div>
-                        <div class="absolute inset-0 border-2 border-blue-600 rounded-3xl z-[-1] pointer-events-none"></div>
-                    @endif
-                    <h3 class="text-2xl font-bold text-slate-800 mb-2">{{ $plan->name }}</h3>
-                    <div class="flex items-baseline gap-2 mb-6">
-                        <span class="text-5xl font-extrabold text-blue-600">৳{{ number_format($plan->price, 0) }}</span>
-                        <span class="text-slate-500 font-medium">/ {{ $plan->billing_cycle }}</span>
-                    </div>
-                    <ul class="space-y-4 mb-8 flex-1">
-                        @if($plan->features_json)
-                            @foreach($plan->features_json as $pf)
-                            <li class="flex items-start gap-3">
-                                <svg class="w-5 h-5 text-blue-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                <span class="text-slate-600">{{ $pf }}</span>
-                            </li>
+            <!-- Comparison Table -->
+            <div class="bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-200 overflow-hidden mb-16 max-w-5xl mx-auto">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="p-6 border-b border-slate-200 bg-slate-50 w-1/4 min-w-[200px]">
+                                    <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Features / Plan</span>
+                                </th>
+                                @foreach($plans as $index => $plan)
+                                    @php
+                                        $isPopular = ($index == 1);
+                                        $colors = ['emerald', 'blue', 'purple', 'rose'];
+                                        $color = $colors[$index % count($colors)];
+                                    @endphp
+                                    <th class="p-6 border-b border-slate-200 {{ $isPopular ? 'bg-blue-50/50 relative' : 'bg-white' }} min-w-[150px]">
+                                        @if($isPopular)
+                                            <div class="absolute top-0 inset-x-0 h-1 bg-blue-500"></div>
+                                        @endif
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="w-3 h-3 rounded-full bg-{{ $color }}-400"></span>
+                                            <span class="font-bold text-slate-900 text-lg">{{ $plan->name }}</span>
+                                            @if($isPopular)
+                                                <span class="bg-yellow-100 text-yellow-800 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">⭐ Popular</span>
+                                            @endif
+                                        </div>
+                                    </th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm md:text-base">
+                            <!-- Price Row -->
+                            <tr class="group hover:bg-slate-50 transition-colors">
+                                <td class="p-6 border-b border-slate-100 font-semibold text-slate-600 bg-slate-50 group-hover:bg-slate-100/50">Annual Price</td>
+                                @foreach($plans as $index => $plan)
+                                    <td class="p-6 border-b border-slate-100 font-bold {{ $index == 1 ? 'text-blue-700 bg-blue-50/50' : 'text-slate-900' }}">
+                                        {{ number_format($plan->price) }} Tk
+                                    </td>
+                                @endforeach
+                            </tr>
+
+                            @php
+                                $featureLabels = [
+                                    'OMR Sheets / Year',
+                                    'Per Sheet Cost',
+                                    'OMR Processing',
+                                    'Result Export',
+                                    'Reporting',
+                                    'Support',
+                                    'Custom OMR Format'
+                                ];
+                            @endphp
+
+                            <!-- Dynamic Feature Rows -->
+                            @foreach($featureLabels as $featureIndex => $label)
+                                <tr class="group hover:bg-slate-50 transition-colors">
+                                    <td class="p-6 border-slate-100 font-semibold text-slate-600 bg-slate-50 group-hover:bg-slate-100/50 {{ $loop->last ? '' : 'border-b' }}">{{ $label }}</td>
+                                    @foreach($plans as $planIndex => $plan)
+                                        @php
+                                            $featureValue = $plan->features_json[$featureIndex] ?? '-';
+                                        @endphp
+                                        <td class="p-6 border-slate-100 {{ $loop->parent->last ? '' : 'border-b' }} {{ $planIndex == 1 ? 'bg-blue-50/50' : '' }}">
+                                            {!! $featureValue !!}
+                                        </td>
+                                    @endforeach
+                                </tr>
                             @endforeach
-                        @endif
-                    </ul>
-                    <a href="#contact" class="w-full block text-center py-4 rounded-xl {{ $loop->iteration == 2 ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-800' }} font-bold transition-all">Get Started</a>
+                        </tbody>
+                    </table>
                 </div>
-                @endforeach
+            </div>
+            
+            <div class="grid md:grid-cols-[1fr_400px] gap-8 max-w-5xl mx-auto">
+                <!-- ERP Integration Packages -->
+                <div class="bg-gradient-to-br from-slate-900 to-indigo-900 rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-xl sm:h-full">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full filter blur-[80px] opacity-20"></div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="mb-8">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-[11px] font-bold mb-4 backdrop-blur-sm border border-white/20 uppercase tracking-widest">
+                                ERP Software Clients
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-bold font-outfit">Premium Package Naming</h3>
+                        </div>
+                        
+                        <div class="space-y-5 flex-1">
+                            <!-- Standard Plan -->
+                            <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                                        <h4 class="text-base font-bold">Standard Plan</h4>
+                                    </div>
+                                    <span class="text-xl font-bold text-white">7 Tk <span class="text-xs font-normal text-slate-400">/student/mo</span></span>
+                                </div>
+                                <ul class="text-slate-300 text-sm space-y-2">
+                                    <li class="flex gap-2 items-center"><span class="text-emerald-400">✔</span> Basic School Management</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Smart Exam Plan -->
+                            <div class="bg-gradient-to-r from-blue-600/40 to-indigo-600/40 border border-blue-400/30 rounded-2xl p-5 relative shadow-inner">
+                                <div class="absolute -top-3 right-4 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">Recommended</div>
+                                <div class="flex justify-between items-center mb-4 mt-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-3 h-3 rounded-full bg-blue-400"></span>
+                                        <h4 class="text-base font-bold">Smart Exam Plan</h4>
+                                    </div>
+                                    <span class="text-2xl font-bold text-white">10 Tk <span class="text-xs font-normal text-blue-200">/student/mo</span></span>
+                                </div>
+                                <ul class="text-blue-50 text-sm space-y-2.5">
+                                    <li class="flex gap-2"><span class="text-emerald-300 drop-shadow shrink-0">✔</span> OMR Result Processing</li>
+                                    <li class="flex gap-2"><span class="text-emerald-300 drop-shadow shrink-0">✔</span> Question Bank (Auto Question Gen. future-ready)</li>
+                                    <li class="flex gap-2"><span class="text-emerald-300 drop-shadow shrink-0">✔</span> Instant Result (Web + Mobile App)</li>
+                                    <li class="flex gap-2"><span class="text-emerald-300 drop-shadow shrink-0">✔</span> Retake / Review System</li>
+                                    <li class="flex gap-2 opacity-60"><span class="text-emerald-300 drop-shadow shrink-0">✔</span> Exam Analytics (coming soon)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Plan & Add-ons -->
+                <div class="flex flex-col gap-6">
+                    <!-- Custom Plan -->
+                    <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex-1 flex flex-col justify-center">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="w-3 h-3 rounded-full bg-slate-800"></span>
+                            <h4 class="text-xl font-bold font-outfit text-slate-900">⚫ Custom Plan</h4>
+                        </div>
+                        <p class="text-slate-500 mb-6 text-sm font-medium">For massive scale operations.</p>
+                        <div class="space-y-3 mb-8">
+                            <div class="flex justify-between items-center border-b border-slate-100 pb-2 text-sm">
+                                <span class="text-slate-600">Volume</span>
+                                <span class="font-bold text-slate-900">100,000+ sheets</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-slate-100 pb-2 text-sm">
+                                <span class="text-slate-600">Pricing</span>
+                                <span class="font-bold text-emerald-600">Negotiated</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm pt-1">
+                                <span class="text-slate-600">Perks</span>
+                                <span class="font-bold text-indigo-600">Priority + Custom</span>
+                            </div>
+                        </div>
+                        <a href="https://amarschool.co/contact-us/" target="_blank" class="w-full block text-center py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold transition-colors">Contact Sales</a>
+                    </div>
+                    
+                    <!-- Addons -->
+                    <div class="bg-indigo-50/80 rounded-3xl p-6 border border-indigo-100">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                            </div>
+                            <h4 class="font-bold text-slate-900">Premium Add-ons</h4>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                            <span class="text-sm font-semibold text-slate-700">Custom OMR Design</span>
+                            <span class="text-sm font-bold text-indigo-600">2K–5K Tk</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 font-medium shadow-sm transition-transform hover:scale-105">
+                    <span class="text-xl">💡</span> Per sheet cost starts from just <strong class="text-emerald-700 font-extrabold text-lg">0.15 Tk</strong>
+                </p>
             </div>
         </div>
     </section>
@@ -336,56 +607,7 @@
         </div>
     </section>
 
-    <!-- Lead Capture Form / Create Account Section -->
-    <section id="contact" class="py-24 bg-white relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50 rounded-full blur-3xl -z-10"></div>
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="bg-white rounded-3xl border border-slate-200 p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4 font-outfit text-slate-900">Create Demo Account</h2>
-                    <p class="text-slate-600 text-lg">Leave your details and we will set up a personalized demo environment for your school within 24 hours.</p>
-                </div>
-                
-                @if(session('success'))
-                    <div class="bg-green-50 border border-green-200 text-green-700 p-6 rounded-2xl mb-6 text-center font-medium">
-                        {{ session('success') }}
-                    </div>
-                @else
-                    <form action="{{ route('lead.store') }}" method="POST" class="space-y-6 max-w-3xl mx-auto">
-                        @csrf
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold mb-2 text-slate-700">Full Name</label>
-                                <input type="text" name="name" required class="w-full bg-slate-50 border {{ $errors->has('name') ? 'border-red-500' : 'border-slate-200' }} rounded-xl px-5 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold mb-2 text-slate-700">School/Organization</label>
-                                <input type="text" name="school" required class="w-full bg-slate-50 border {{ $errors->has('school') ? 'border-red-500' : 'border-slate-200' }} rounded-xl px-5 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors">
-                            </div>
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold mb-2 text-slate-700">Phone Number</label>
-                                <input type="text" name="phone" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold mb-2 text-slate-700">Email Address</label>
-                                <input type="email" name="email" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors">
-                            </div>
-                        </div>
-                        <div class="pt-2 flex items-center bg-slate-50 p-4 rounded-xl border border-slate-100">
-                            <input type="hidden" name="is_demo_requested" value="0">
-                            <input type="checkbox" name="is_demo_requested" value="1" id="demo_req" class="w-5 h-5 bg-white border-slate-300 rounded text-blue-600 focus:ring-blue-500" checked>
-                            <label for="demo_req" class="ml-3 text-sm font-medium text-slate-700">Yes, I want to request a live demo walkthrough.</label>
-                        </div>
-                        <div class="pt-4">
-                            <button type="submit" class="w-full bg-blue-600 text-white font-bold text-lg py-4 rounded-xl hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 transition-all">Create Demo Account</button>
-                        </div>
-                    </form>
-                @endif
-            </div>
-        </div>
-    </section>
+
 
     <!-- Testimonials Section -->
     <section class="py-24 bg-slate-50 border-t border-slate-200">
@@ -424,6 +646,49 @@
                 </div>
                 @empty
                 <div class="col-span-3 text-center text-slate-500 p-8">No testimonials yet.</div>
+                @endforelse
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- OMR Templates Section -->
+    <section id="omr-templates" class="py-24 bg-slate-50 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-blue-600 font-bold tracking-wider uppercase text-sm mb-4 block">Design Gallery</span>
+                <h2 class="text-3xl md:text-5xl font-bold font-outfit text-slate-900 mb-6">OMR Template Designs</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">Explore and download our ready-made OMR sheet templates customized for AmarSchool's advanced grading engine.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                @forelse($omrTemplates as $template)
+                <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200 group hover:shadow-xl transition-all duration-300 flex flex-col">
+                    <div class="aspect-[1/1.4] bg-slate-100 rounded-2xl mb-6 overflow-hidden relative border border-slate-100">
+                        @if($template->image)
+                            <img src="{{ Storage::url($template->image) }}" alt="{{ $template->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
+                                <a href="{{ Storage::url($template->image) }}" download title="Download Template" class="bg-white text-slate-900 font-bold px-6 py-3 rounded-xl hover:scale-105 hover:bg-blue-50 hover:text-blue-700 transition-all shadow-2xl flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                    Download Image
+                                </a>
+                            </div>
+                        @else
+                            <div class="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                                <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <span class="text-sm font-medium">No Preview Available</span>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="px-2 pb-2 text-center mt-auto">
+                        <h3 class="text-lg font-bold text-slate-800 font-outfit">{{ $template->title }}</h3>
+                        <p class="text-sm text-slate-500 mt-1">{{ $template->description }}</p>
+                    </div>
+                </div>
+                @empty
+                <div class="col-span-full py-12 text-center text-slate-500">
+                    <p class="mb-4">No template designs uploaded yet.</p>
+                </div>
                 @endforelse
             </div>
         </div>
@@ -501,15 +766,14 @@
                             <span class="mt-1 text-blue-500 shrink-0">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             </span>
-                            <span class="text-slate-400">House #192, Road #2, Avenue #3, Mirpur DOHS, Dhaka 1216</span>
+                            <span class="text-slate-400">{{ $settings['contact_address'] ?? 'House #192, Road #2, Avenue #3, Mirpur DOHS, Dhaka 1216' }}</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="mt-1 text-blue-500 shrink-0">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             </span>
                             <div class="flex flex-col text-slate-400">
-                                <a href="mailto:hello@amarschool.co" class="hover:text-blue-400 transition-colors">hello@amarschool.co</a>
-                                <a href="mailto:support@amarschool.co" class="hover:text-blue-400 transition-colors">support@amarschool.co</a>
+                                <a href="mailto:{{ $settings['contact_email'] ?? 'hello@amarschool.co' }}" class="hover:text-blue-400 transition-colors">{{ $settings['contact_email'] ?? 'hello@amarschool.co' }}</a>
                             </div>
                         </li>
                         <li class="flex items-start gap-3">
@@ -517,8 +781,7 @@
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                             </span>
                             <div class="flex flex-col text-slate-400">
-                                <a href="tel:+8801716282884" class="hover:text-blue-400 transition-colors">+88 01716 282 884</a>
-                                <a href="tel:+8801738737668" class="hover:text-blue-400 transition-colors">+88 01738 737 668</a>
+                                <a href="tel:{{ $settings['contact_phone'] ?? '+8801716282884' }}" class="hover:text-blue-400 transition-colors">{{ $settings['contact_phone'] ?? '+88 01716 282 884' }}</a>
                             </div>
                         </li>
                     </ul>
@@ -664,6 +927,89 @@
                 chatMessages.appendChild(msgDiv);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
+        });
+    </script>
+
+    <!-- Super Premium Antigravity & Reveal Effects -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Reveal Animations (AOS style)
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: unobserve after reveal depending on preference
+                        // observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            // Select elements to animate
+            const revealElements = document.querySelectorAll('section > div > div, .grid > div, h2, p, .bg-white.rounded-3xl');
+            revealElements.forEach((el, index) => {
+                if(!el.classList.contains('fixed') && !el.closest('#chatbot-widget') && !el.classList.contains('hidden') && !el.closest('nav')) {
+                    el.classList.add('reveal');
+                    // Stagger grid items
+                    if(el.parentElement && el.parentElement.classList.contains('grid')) {
+                        el.style.transitionDelay = `${(index % 4) * 100}ms`;
+                    }
+                    observer.observe(el);
+                }
+            });
+
+            // 2. Antigravity Mouse Glow Effect
+            const glow1 = document.getElementById('magic-cursor-glow');
+            const glow2 = document.getElementById('magic-cursor-glow-2');
+            
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let currentX1 = mouseX;
+            let currentY1 = mouseY;
+            let currentX2 = mouseX;
+            let currentY2 = mouseY;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            // Smooth interpolation (lerp) for that DeepMind/Antigravity liquid feel
+            function animateGlow() {
+                // Lerp for inner glow (super fluid)
+                currentX1 += (mouseX - currentX1) * 0.08;
+                currentY1 += (mouseY - currentY1) * 0.08;
+                
+                // Lerp for outer glow (slow, floaty, organic)
+                currentX2 += (mouseX - currentX2) * 0.04;
+                currentY2 += (mouseY - currentY2) * 0.04;
+
+                if (glow1) glow1.style.background = `radial-gradient(circle 700px at ${currentX1}px ${currentY1}px, rgba(236, 72, 153, 0.25), transparent 50%), radial-gradient(circle 400px at ${currentX2}px ${currentY2}px, rgba(6, 182, 212, 0.2), transparent 50%)`;
+                if (glow2) glow2.style.background = `radial-gradient(circle 900px at ${currentX2}px ${currentY2}px, rgba(99, 102, 241, 0.3), transparent 60%), radial-gradient(circle 500px at ${currentX1}px ${currentY2}px, rgba(244, 63, 94, 0.15), transparent 60%)`;
+
+                requestAnimationFrame(animateGlow);
+            }
+            animateGlow();
+
+            // 3. Magnetic Buttons
+            const buttons = document.querySelectorAll('a.bg-blue-600, button.bg-blue-600');
+            buttons.forEach(btn => {
+                btn.classList.add('magnetic-btn');
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    // Slightly move the button towards the cursor
+                    btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = `translate(0px, 0px)`;
+                });
+            });
         });
     </script>
 </body>
