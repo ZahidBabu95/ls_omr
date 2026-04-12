@@ -27,7 +27,7 @@ class SettingController extends Controller
 
         foreach ($data as $key => $value) {
             if ($request->hasFile($key) && $key !== 'favicon') continue;
-            if (is_file($value)) continue;
+            
             Setting::updateOrCreate(
                 ['key' => $key],
                 ['value' => $value ?? '']
