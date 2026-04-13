@@ -49,6 +49,20 @@
         .magnetic-btn {
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+
+        /* Infinite Marquee Scroll */
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marqueeScroll 30s linear infinite;
+        }
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden relative selection:bg-blue-200">
@@ -143,7 +157,7 @@
                 @auth
                     <a href="{{ route('admin.dashboard') }}" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Log in</a>
+                    <a href="{{ route('login') }}" target="_blank" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Log in</a>
                 @endauth
                 <a href="https://amarschool.co/contact-us/" target="_blank" class="hidden md:inline-flex px-5 py-2.5 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 transition-all">Contact Us</a>
             </div>
@@ -152,7 +166,7 @@
     </header>
 
     <!-- Hero Section -->
-    <main class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-b from-blue-50/80 to-white">
+    <main class="relative pt-32 pb-12 lg:pt-44 lg:pb-20 overflow-hidden bg-gradient-to-b from-blue-50/80 to-white">
         <!-- Abstract Shapes & Dynamic Colorful Blobs -->
         <div class="absolute top-10 -left-10 w-96 h-96 bg-fuchsia-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse transition-all duration-1000 ease-in-out"></div>
         <div class="absolute top-40 -right-10 w-96 h-96 bg-cyan-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-pulse delay-1000 transition-all duration-1000"></div>
@@ -164,31 +178,24 @@
                 <div class="text-left">
                     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
                         <span class="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
-                        Smarter, Faster Examiner
+                        {{ $settings['hero_badge'] ?? 'Smarter, Faster Examiner' }}
                     </div>
                     <h1 class="text-4xl md:text-6xl lg:text-[4rem] font-extrabold tracking-tight mb-6 text-slate-900 leading-[1.1]">
                         {{ $settings['hero_title'] ?? 'Automate Your MCQ Exam' }}<br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Checking in Seconds</span>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{{ $settings['hero_title_highlight'] ?? 'Checking in Seconds' }}</span>
                     </h1>
                     <p class="mt-4 text-lg md:text-xl text-slate-600 mb-10 leading-relaxed font-medium max-w-lg">
-                        No more manual checking. Save hours with our smart OMR solution designed to eliminate human error and accelerate results.
+                        {{ $settings['hero_subtitle'] ?? 'No more manual checking. Save hours with our smart OMR solution designed to eliminate human error and accelerate results.' }}
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-4 mb-14">
-                        <a href="https://amarschool.co/" target="_blank" class="px-8 py-4 rounded-2xl bg-blue-600 text-white font-bold hover:shadow-[0_10px_40px_rgba(37,99,235,0.4)] hover:-translate-y-1 transition-all text-center">Learn More</a>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="{{ $settings['hero_button_url'] ?? 'https://omrservice.amarschool.co/desktop-app/LSOMR_Setup.exe' }}" class="px-8 py-4 rounded-2xl bg-blue-600 text-white font-bold hover:shadow-[0_10px_40px_rgba(37,99,235,0.4)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            {{ $settings['hero_button_text'] ?? 'Download PC Version' }}
+                        </a>
                         <a href="#downloads" class="px-8 py-4 rounded-2xl bg-white text-slate-700 font-bold border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
                             <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                             Sample Sheet
                         </a>
-                    </div>
-                    
-                    <!-- Trust Badges -->
-                    <div class="pt-8 border-t border-slate-200/80">
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-5">Trusted by 150+ Institutes</p>
-                        <div class="flex flex-wrap gap-8 opacity-60 grayscale hover:grayscale-0 transition-duration-500">
-                            <span class="text-xl font-bold font-outfit text-slate-800 flex items-center gap-2"><span class="w-4 h-4 bg-blue-500 rounded-sm inline-block shadow-sm"></span>EduSchool+</span>
-                            <span class="text-xl font-bold font-outfit text-slate-800 flex items-center gap-2"><span class="w-4 h-4 bg-emerald-500 rounded-full inline-block shadow-sm"></span>AcademyX</span>
-                            <span class="text-xl font-bold font-outfit text-slate-800 flex items-center gap-2"><div class="w-4 h-4 bg-rose-500 rotate-45 inline-block shadow-sm"></div>GlobalInst</span>
-                        </div>
                     </div>
                 </div>
 
@@ -265,10 +272,267 @@
         </div>
     </main>
 
-    <!-- Problem Section -->
-    <section id="problem" class="py-24 bg-white">
+    <!-- Client Logo Marquee Section -->
+    @if($clientLogos->count() > 0)
+    <section class="py-10 bg-white border-y border-slate-100 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+            <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">Trusted by 150+ Leading Educational Institutes</p>
+        </div>
+        <div class="relative">
+            <!-- Fade edges -->
+            <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+            <!-- Marquee Track -->
+            <div class="marquee-track">
+                @for($i = 0; $i < 2; $i++)
+                @foreach($clientLogos as $cLogo)
+                <div class="flex items-center justify-center mx-8 sm:mx-12 shrink-0">
+                    @if($cLogo->website_url)
+                    <a href="{{ $cLogo->website_url }}" target="_blank" class="block" title="{{ $cLogo->name }}">
+                    @endif
+                        <img src="{{ asset('storage/' . $cLogo->logo_path) }}" alt="{{ $cLogo->name }}" class="h-10 sm:h-12 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                    @if($cLogo->website_url)
+                    </a>
+                    @endif
+                </div>
+                @endforeach
+                @endfor
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-16 bg-slate-50 border-t border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 text-sm font-semibold mb-4">
+                    <span class="w-2 h-2 rounded-full bg-indigo-600"></span> Pricing
+                </div>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">OMR Solution Pricing Plans</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto text-lg">(For Non-ERP Clients)</p>
+            </div>
+            
+            <!-- Comparison Table -->
+            <div class="bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-200 overflow-hidden mb-10 max-w-5xl mx-auto">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="px-4 md:px-5 py-4 border-b border-r border-slate-200 bg-slate-50/95 backdrop-blur-md w-1/4 min-w-[140px] md:min-w-[200px] sticky left-0 z-20 shadow-[4px_0_15px_rgba(0,0,0,0.03)]">
+                                    <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-500">Features / Plan</span>
+                                </th>
+                                @foreach($plans as $index => $plan)
+                                    @php
+                                        $isPopular = ($index == 1);
+                                        $colors = ['emerald', 'blue', 'purple', 'rose'];
+                                        $color = $colors[$index % count($colors)];
+                                    @endphp
+                                    <th class="px-4 md:px-5 py-4 border-b border-slate-200 {{ $isPopular ? 'bg-blue-50/50 relative' : 'bg-white' }} min-w-[130px] md:min-w-[150px]">
+                                        @if($isPopular)
+                                            <div class="absolute top-0 inset-x-0 h-1 bg-blue-500"></div>
+                                        @endif
+                                        <div class="flex flex-col md:flex-row md:items-center gap-1.5 md:gap-2 mb-1">
+                                            <div class="flex items-center gap-1.5">
+                                                <span class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-{{ $color }}-400 shrink-0"></span>
+                                                <span class="font-bold text-slate-900 text-base md:text-lg">{{ $plan->name }}</span>
+                                            </div>
+                                            @if($isPopular)
+                                                <span class="bg-yellow-100 text-yellow-800 text-[9px] md:text-[10px] font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1 w-fit">⭐ Popular</span>
+                                            @endif
+                                        </div>
+                                    </th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm md:text-base">
+                            <!-- Price Row -->
+                            <tr class="group hover:bg-slate-50 transition-colors">
+                                <td class="px-4 md:px-5 py-4 border-b border-r border-slate-100 font-semibold text-slate-600 bg-slate-50/95 backdrop-blur-md group-hover:bg-slate-100/95 sticky left-0 z-10 shadow-[4px_0_15px_rgba(0,0,0,0.03)] text-sm md:text-base">Annual Price</td>
+                                @foreach($plans as $index => $plan)
+                                    <td class="px-4 md:px-5 py-4 border-b border-slate-100 font-bold {{ $index == 1 ? 'text-blue-700 bg-blue-50/50' : 'text-slate-900' }} text-sm md:text-base">
+                                        {{ number_format($plan->price) }} Tk
+                                    </td>
+                                @endforeach
+                            </tr>
+
+                            @php
+                                $featureLabels = [
+                                    'OMR Sheets / Year',
+                                    'Per Sheet Cost',
+                                    'OMR Processing',
+                                    'Result Export',
+                                    'Reporting',
+                                    'Support',
+                                    'Own Branding',
+                                    'Custom OMR Format'
+                                ];
+                            @endphp
+
+                            <!-- Dynamic Feature Rows -->
+                            @foreach($featureLabels as $featureIndex => $label)
+                                <tr class="group hover:bg-slate-50 transition-colors">
+                                    <td class="px-4 md:px-5 py-3.5 border-r border-slate-100 font-semibold text-slate-600 bg-slate-50/95 backdrop-blur-md group-hover:bg-slate-100/95 sticky left-0 z-10 shadow-[4px_0_15px_rgba(0,0,0,0.03)] text-xs md:text-sm {{ $loop->last ? '' : 'border-b' }}">{{ $label }}</td>
+                                    @foreach($plans as $planIndex => $plan)
+                                        @php
+                                            if ($label === 'Own Branding') {
+                                                $featureValue = '<span class="text-emerald-500 font-bold text-lg">✔</span>';
+                                            } else {
+                                                $mapIndex = $featureIndex;
+                                                if ($featureIndex == 7) $mapIndex = 6; // Keep mapping 'Custom OMR Format' to db index 6
+                                                $featureValue = $plan->features_json[$mapIndex] ?? '-';
+                                                
+                                                if ($label === 'Custom OMR Format' && (str_contains($featureValue, '✖') || str_contains($featureValue, 'u2716') || $featureValue === '-')) {
+                                                    $featureValue = '<div class="flex flex-col gap-2"><div class="flex items-center gap-1.5"><span class="text-rose-400 font-bold text-sm">✖</span><span class="text-[11px] md:text-xs font-semibold text-slate-500">Not Included</span></div><a href="https://amarschool.co/contact-us/" target="_blank" class="block w-full max-w-[120px] md:max-w-[140px] text-center border border-indigo-100 bg-gradient-to-b from-indigo-50/50 to-indigo-50 hover:border-indigo-300 hover:shadow-sm rounded-xl p-2 md:p-2.5 transition-all group cursor-pointer"><span class="block text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-indigo-400 group-hover:text-indigo-600 transition-colors mb-1 truncate">+ Custom Template</span><span class="block text-[10px] md:text-xs font-extrabold text-indigo-700 truncate">2K - 5K Tk</span></a></div>';
+                                                }
+                                            }
+                                        @endphp
+                                        <td class="px-4 md:px-5 py-3.5 border-slate-100 text-xs md:text-sm {{ $loop->parent->last ? '' : 'border-b' }} {{ $planIndex == 1 ? 'bg-blue-50/50' : '' }}">
+                                            {!! $featureValue !!}
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
+                <!-- ERP Integration Packages -->
+                <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 rounded-[2.5rem] p-5 sm:p-8 md:p-10 text-white relative overflow-hidden shadow-[0_20px_60px_rgba(15,23,42,0.4)] flex flex-col h-full ring-1 ring-white/10 hover:shadow-[0_30px_70px_rgba(15,23,42,0.5)] transition-all duration-500 group/erp">
+                    <!-- Premium Background Effects -->
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDEwaDQwTTEwIDB2NDBNMCAyMGg0ME0yMCAwdjQwTTAgMzBoNDBNMzAgMHY0MCIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIi8+PC9zdmc+')] opacity-50 z-0 pointer-events-none"></div>
+                    <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-500 rounded-full filter blur-[100px] opacity-20 group-hover/erp:opacity-40 group-hover/erp:scale-110 transition-all duration-700"></div>
+                    <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-500 rounded-full filter blur-[100px] opacity-10 group-hover/erp:opacity-20 group-hover/erp:scale-110 transition-all duration-700"></div>
+                    
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="mb-8 flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-6">
+                            <div>
+                                <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/15 text-white text-sm font-extrabold mb-4 backdrop-blur-md border border-white/30 uppercase tracking-widest shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse shadow-[0_0_10px_rgba(96,165,250,0.8)]"></span>
+                                    ERP Software Clients
+                                </div>
+                                <h3 class="text-3xl md:text-4xl font-bold font-outfit tracking-tight">Premium Packages</h3>
+                            </div>
+                            <div class="text-left sm:text-right mt-1 sm:mt-12">
+                                <p class="text-sm text-slate-400 max-w-full sm:max-w-[200px] sm:ml-auto leading-relaxed">Exclusive tailored pricing for integrated partners</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid sm:grid-cols-2 gap-6 flex-1 h-full items-stretch relative">
+                            <!-- Standard Plan -->
+                            <div class="bg-white/5 border border-white/10 rounded-3xl p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-md flex flex-col relative group">
+                                <div class="absolute inset-0 bg-emerald-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-bl-full rounded-tr-3xl filter blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none"></div>
+                                <div class="flex justify-between items-start mb-6 relative z-10">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 group-hover:scale-125 transition-transform duration-300"></span>
+                                        </div>
+                                        <h4 class="text-lg font-bold text-slate-100">Standard Plan</h4>
+                                    </div>
+                                </div>
+                                <div class="mb-6 flex items-baseline gap-1 relative z-10">
+                                    <span class="text-4xl font-extrabold text-white tracking-tight">7 Tk</span>
+                                    <span class="text-xs font-medium text-slate-400">/student/mo</span>
+                                </div>
+                                <ul class="text-slate-300 text-sm space-y-3.5 mt-auto relative z-10">
+                                    <li class="flex gap-3 items-start"><span class="text-emerald-400 mt-0.5">✔</span> <span class="leading-snug">Basic School Management Features</span></li>
+                                    <li class="flex gap-3 items-start"><span class="text-emerald-400 mt-0.5">✔</span> <span class="leading-snug">Standard Support Line</span></li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Smart Exam Plan -->
+                            <div class="bg-gradient-to-b from-blue-600/40 to-indigo-800/40 border border-blue-400/50 rounded-3xl p-5 sm:p-6 relative shadow-[0_0_40px_rgba(59,130,246,0.3)] flex flex-col group group/smart mt-8 sm:mt-0">
+                                <div class="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-transparent opacity-0 group-hover/smart:opacity-100 rounded-3xl transition-opacity duration-300 pointer-events-none"></div>
+                                
+                                <!-- Floating Badges outside container correctly (Requires no overflow-hidden) -->
+                                <div class="absolute -top-4 left-2 sm:left-4 bg-gradient-to-r from-emerald-400 to-emerald-500 text-slate-900 text-[9px] sm:text-[11px] font-extrabold px-3 sm:px-4 py-1.5 rounded-full uppercase tracking-widest shadow-[0_5px_15px_rgba(52,211,153,0.4)] flex items-center gap-1.5 animate-bounce z-20"><svg class="w-3 h-3 sm:w-4 sm:h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> OMR FREE</div>
+                                <div class="absolute -top-3 right-3 sm:right-4 bg-yellow-400 text-yellow-900 text-[8px] sm:text-[10px] font-bold px-2.5 sm:px-3 py-1 rounded-full uppercase tracking-wider shadow-md z-20">Recommended</div>
+                                
+                                <div class="flex justify-between items-start mb-6 mt-3 relative z-10">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/30">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-blue-400 group-hover/smart:scale-125 transition-transform duration-300 shadow-[0_0_10px_rgba(96,165,250,1)]"></span>
+                                        </div>
+                                        <h4 class="text-lg font-bold text-white">Smart Exam Plan</h4>
+                                    </div>
+                                </div>
+                                <div class="mb-5 flex items-baseline gap-1 relative z-10 pb-5 border-b border-blue-400/20">
+                                    <span class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200 tracking-tight">10 Tk</span>
+                                    <span class="text-xs font-medium text-blue-200">/student/mo</span>
+                                </div>
+                                <ul class="text-blue-50 text-[13px] space-y-4 mt-auto relative z-10 leading-snug">
+                                    <li class="flex gap-3 font-bold text-white items-start bg-blue-500/20 p-2.5 -mx-2.5 rounded-xl border border-blue-400/30 shadow-inner">
+                                        <span class="text-yellow-400 drop-shadow shrink-0 text-xl mt-[-2px]">🔥</span> 
+                                        <div class="flex flex-col">
+                                            <span class="text-sm">Full OMR Processing Engine</span>
+                                            <span class="text-emerald-300 font-extrabold text-xs tracking-widest uppercase mt-1">100% Free Forever</span>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-2.5 items-start"><span class="text-blue-300 drop-shadow shrink-0 mt-0.5">✔</span> <span>Advanced School Management</span></li>
+                                    <li class="flex gap-2.5 items-start"><span class="text-blue-300 drop-shadow shrink-0 mt-0.5">✔</span> <span>Question Bank (Auto Gen.)</span></li>
+                                    <li class="flex gap-2.5 items-start"><span class="text-blue-300 drop-shadow shrink-0 mt-0.5">✔</span> <span>Instant Web & App Results</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Plan & Add-ons -->
+                <div class="flex flex-col h-full lg:col-span-1 mt-8 lg:mt-0">
+                    <!-- Custom Plan -->
+                    <div class="bg-white rounded-[2.5rem] p-5 sm:p-8 md:p-10 border border-slate-200 shadow-[0_20px_50px_rgba(15,23,42,0.05)] flex-1 flex flex-col relative overflow-hidden hover:border-indigo-300 hover:shadow-[0_30px_70px_rgba(15,23,42,0.08)] transition-all duration-500 group/custom">
+                        <!-- BG elements -->
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-bl-full -z-10 group-hover/custom:scale-110 transition-transform duration-700"></div>
+                        <div class="absolute bottom-0 left-0 w-32 h-32 bg-slate-50/80 rounded-tr-full -z-10 group-hover/custom:bg-blue-50/50 transition-colors duration-500"></div>
+                        
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white flex items-center justify-center shrink-0 shadow-lg shadow-slate-900/20 border border-slate-700">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                            </div>
+                            <h4 class="text-3xl font-bold font-outfit text-slate-900 tracking-tight">Custom Plan</h4>
+                        </div>
+                        <p class="text-slate-500 mb-8 max-w-sm text-sm leading-relaxed">For massive scale operations, government bodies, or multi-campus institutions requiring custom integrations.</p>
+                        
+                        <div class="space-y-4 mb-10 w-full mt-auto">
+                            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                                <span class="text-slate-500 text-sm font-medium">Volume Limit</span>
+                                <span class="font-bold text-slate-900 bg-slate-100/80 text-xs px-3 py-1.5 rounded-full border border-slate-200">100,000+ sheets</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                                <span class="text-slate-500 text-sm font-medium">Pricing</span>
+                                <span class="font-bold text-emerald-700 bg-emerald-50 text-xs px-3 py-1.5 rounded-full border border-emerald-200">Negotiated Per SLA</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-1 pb-2">
+                                <span class="text-slate-500 text-sm font-medium">Extra Perks</span>
+                                <span class="font-bold text-indigo-700 bg-indigo-50 text-[11px] px-3 py-1.5 rounded-full border border-indigo-200 text-center">Priority + API</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto pt-4 relative z-10">
+                            <a href="https://amarschool.co/contact-us/" target="_blank" class="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-slate-900 border border-slate-800 text-white font-bold hover:bg-indigo-600 hover:border-indigo-600 hover:shadow-xl hover:shadow-indigo-500/20 transition-all duration-300 group/btn">
+                                Talk to Sales Team
+                                <svg class="w-5 h-5 opacity-70 group-hover/btn:translate-x-1.5 group-hover/btn:opacity-100 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 font-medium shadow-sm transition-transform hover:scale-105">
+                    <span class="text-xl">💡</span> Per sheet cost starts from just <strong class="text-emerald-700 font-extrabold text-lg">0.15 Tk</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="problem" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">{{ $settings['problem_title'] ?? 'Why Traditional Checking Fails' }}</h2>
                 <p class="text-slate-600 max-w-2xl mx-auto text-lg">{{ $settings['problem_subtitle'] ?? 'The manual grading process is broken, causing stress for teachers and delayed results for students.' }}</p>
             </div>
@@ -303,9 +567,9 @@
     </section>
 
     <!-- Solution Section -->
-    <section class="py-24 bg-blue-50/50 border-y border-blue-100">
+    <section class="py-16 bg-blue-50/50 border-y border-blue-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">How OMR Solves It</h2>
                 <p class="text-slate-600 max-w-2xl mx-auto text-lg">Just 3 simple steps to eliminate grading hassle forever.</p>
             </div>
@@ -337,9 +601,9 @@
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-24 bg-white">
+    <section id="features" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">Powerful Core Features</h2>
                 <p class="text-slate-600 max-w-2xl mx-auto text-lg">Everything you need to run sophisticated MCQ exams seamlessly.</p>
             </div>
@@ -365,7 +629,7 @@
     </section>
 
     <!-- Demo Section -->
-    <section id="demo" class="py-24 bg-slate-900 text-white rounded-t-[3rem] mt-10">
+    <section id="demo" class="py-16 bg-slate-900 text-white rounded-t-[3rem]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div>
@@ -376,14 +640,17 @@
                         <li class="flex items-center gap-3 text-slate-300"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center">✓</span> Detailed Analytics Per Question</li>
                         <li class="flex items-center gap-3 text-slate-300"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center">✓</span> Double Verification Engine</li>
                     </ul>
-                    <a href="#contact" class="inline-flex px-8 py-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-500 transition-colors">Try Live Demo</a>
+                    <a href="{{ route('tutorials') }}" class="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-500 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Watch Video Tutorials
+                    </a>
                 </div>
                 <div class="relative">
                     <div class="absolute inset-0 bg-blue-500 blur-[80px] opacity-20 rounded-full"></div>
                     <div class="relative p-2 rounded-2xl bg-white/5 border border-white/10 aspect-video flex items-center justify-center shadow-2xl">
                         <!-- Youtube Embed Placeholder -->
-                        @if(isset($settings['demo_video_url']))
-                            <iframe class="w-full h-full rounded-xl" src="{{ $settings['demo_video_url'] }}" title="Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        @if(isset($featuredTutorial))
+                            <iframe class="w-full h-full rounded-xl" src="{{ $featuredTutorial->embed_url }}" title="{{ $featuredTutorial->title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         @else
                             <div class="text-center">
                                 <div class="w-16 h-16 bg-white text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 cursor-pointer hover:scale-110 transition-transform shadow-xl">
@@ -398,190 +665,9 @@
         </div>
     </section>
 
-    <!-- Pricing -->
-    <section id="pricing" class="py-24 bg-slate-50 border-t border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 text-sm font-semibold mb-4">
-                    <span class="w-2 h-2 rounded-full bg-indigo-600"></span> Pricing
-                </div>
-                <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">OMR Solution Pricing Plans</h2>
-                <p class="text-slate-600 max-w-2xl mx-auto text-lg">(For Non-ERP Clients)</p>
-            </div>
-            
-            <!-- Comparison Table -->
-            <div class="bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-200 overflow-hidden mb-16 max-w-5xl mx-auto">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr>
-                                <th class="p-6 border-b border-slate-200 bg-slate-50 w-1/4 min-w-[200px]">
-                                    <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Features / Plan</span>
-                                </th>
-                                @foreach($plans as $index => $plan)
-                                    @php
-                                        $isPopular = ($index == 1);
-                                        $colors = ['emerald', 'blue', 'purple', 'rose'];
-                                        $color = $colors[$index % count($colors)];
-                                    @endphp
-                                    <th class="p-6 border-b border-slate-200 {{ $isPopular ? 'bg-blue-50/50 relative' : 'bg-white' }} min-w-[150px]">
-                                        @if($isPopular)
-                                            <div class="absolute top-0 inset-x-0 h-1 bg-blue-500"></div>
-                                        @endif
-                                        <div class="flex items-center gap-2 mb-1">
-                                            <span class="w-3 h-3 rounded-full bg-{{ $color }}-400"></span>
-                                            <span class="font-bold text-slate-900 text-lg">{{ $plan->name }}</span>
-                                            @if($isPopular)
-                                                <span class="bg-yellow-100 text-yellow-800 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">⭐ Popular</span>
-                                            @endif
-                                        </div>
-                                    </th>
-                                @endforeach
-                            </tr>
-                        </thead>
-                        <tbody class="text-sm md:text-base">
-                            <!-- Price Row -->
-                            <tr class="group hover:bg-slate-50 transition-colors">
-                                <td class="p-6 border-b border-slate-100 font-semibold text-slate-600 bg-slate-50 group-hover:bg-slate-100/50">Annual Price</td>
-                                @foreach($plans as $index => $plan)
-                                    <td class="p-6 border-b border-slate-100 font-bold {{ $index == 1 ? 'text-blue-700 bg-blue-50/50' : 'text-slate-900' }}">
-                                        {{ number_format($plan->price) }} Tk
-                                    </td>
-                                @endforeach
-                            </tr>
-
-                            @php
-                                $featureLabels = [
-                                    'OMR Sheets / Year',
-                                    'Per Sheet Cost',
-                                    'OMR Processing',
-                                    'Result Export',
-                                    'Reporting',
-                                    'Support',
-                                    'Custom OMR Format'
-                                ];
-                            @endphp
-
-                            <!-- Dynamic Feature Rows -->
-                            @foreach($featureLabels as $featureIndex => $label)
-                                <tr class="group hover:bg-slate-50 transition-colors">
-                                    <td class="p-6 border-slate-100 font-semibold text-slate-600 bg-slate-50 group-hover:bg-slate-100/50 {{ $loop->last ? '' : 'border-b' }}">{{ $label }}</td>
-                                    @foreach($plans as $planIndex => $plan)
-                                        @php
-                                            $featureValue = $plan->features_json[$featureIndex] ?? '-';
-                                        @endphp
-                                        <td class="p-6 border-slate-100 {{ $loop->parent->last ? '' : 'border-b' }} {{ $planIndex == 1 ? 'bg-blue-50/50' : '' }}">
-                                            {!! $featureValue !!}
-                                        </td>
-                                    @endforeach
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="grid md:grid-cols-[1fr_400px] gap-8 max-w-5xl mx-auto">
-                <!-- ERP Integration Packages -->
-                <div class="bg-gradient-to-br from-slate-900 to-indigo-900 rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-xl sm:h-full">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full filter blur-[80px] opacity-20"></div>
-                    <div class="relative z-10 flex flex-col h-full">
-                        <div class="mb-8">
-                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-[11px] font-bold mb-4 backdrop-blur-sm border border-white/20 uppercase tracking-widest">
-                                ERP Software Clients
-                            </div>
-                            <h3 class="text-2xl md:text-3xl font-bold font-outfit">Premium Package Naming</h3>
-                        </div>
-                        
-                        <div class="space-y-5 flex-1">
-                            <!-- Standard Plan -->
-                            <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors">
-                                <div class="flex justify-between items-center mb-3">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
-                                        <h4 class="text-base font-bold">Standard Plan</h4>
-                                    </div>
-                                    <span class="text-xl font-bold text-white">7 Tk <span class="text-xs font-normal text-slate-400">/student/mo</span></span>
-                                </div>
-                                <ul class="text-slate-300 text-sm space-y-2">
-                                    <li class="flex gap-2 items-center"><span class="text-emerald-400">✔</span> Basic School Management</li>
-                                </ul>
-                            </div>
-                            
-                            <!-- Smart Exam Plan -->
-                            <div class="bg-gradient-to-r from-blue-600/40 to-indigo-600/40 border border-blue-400/30 rounded-2xl p-5 relative shadow-inner">
-                                <div class="absolute -top-3 right-4 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">Recommended</div>
-                                <div class="flex justify-between items-center mb-4 mt-1">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-3 h-3 rounded-full bg-blue-400"></span>
-                                        <h4 class="text-base font-bold">Smart Exam Plan</h4>
-                                    </div>
-                                    <span class="text-2xl font-bold text-white">10 Tk <span class="text-xs font-normal text-blue-200">/student/mo</span></span>
-                                </div>
-                                <ul class="text-blue-50 text-sm space-y-2.5">
-                                    <li class="flex gap-2"><span class="text-emerald-300 drop-shadow shrink-0">✔</span> OMR Result Processing</li>
-                                    <li class="flex gap-2"><span class="text-emerald-300 drop-shadow shrink-0">✔</span> Question Bank (Auto Question Gen. future-ready)</li>
-                                    <li class="flex gap-2"><span class="text-emerald-300 drop-shadow shrink-0">✔</span> Instant Result (Web + Mobile App)</li>
-                                    <li class="flex gap-2"><span class="text-emerald-300 drop-shadow shrink-0">✔</span> Retake / Review System</li>
-                                    <li class="flex gap-2 opacity-60"><span class="text-emerald-300 drop-shadow shrink-0">✔</span> Exam Analytics (coming soon)</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Custom Plan & Add-ons -->
-                <div class="flex flex-col gap-6">
-                    <!-- Custom Plan -->
-                    <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex-1 flex flex-col justify-center">
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="w-3 h-3 rounded-full bg-slate-800"></span>
-                            <h4 class="text-xl font-bold font-outfit text-slate-900">⚫ Custom Plan</h4>
-                        </div>
-                        <p class="text-slate-500 mb-6 text-sm font-medium">For massive scale operations.</p>
-                        <div class="space-y-3 mb-8">
-                            <div class="flex justify-between items-center border-b border-slate-100 pb-2 text-sm">
-                                <span class="text-slate-600">Volume</span>
-                                <span class="font-bold text-slate-900">100,000+ sheets</span>
-                            </div>
-                            <div class="flex justify-between items-center border-b border-slate-100 pb-2 text-sm">
-                                <span class="text-slate-600">Pricing</span>
-                                <span class="font-bold text-emerald-600">Negotiated</span>
-                            </div>
-                            <div class="flex justify-between items-center text-sm pt-1">
-                                <span class="text-slate-600">Perks</span>
-                                <span class="font-bold text-indigo-600">Priority + Custom</span>
-                            </div>
-                        </div>
-                        <a href="https://amarschool.co/contact-us/" target="_blank" class="w-full block text-center py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold transition-colors">Contact Sales</a>
-                    </div>
-                    
-                    <!-- Addons -->
-                    <div class="bg-indigo-50/80 rounded-3xl p-6 border border-indigo-100">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                            </div>
-                            <h4 class="font-bold text-slate-900">Premium Add-ons</h4>
-                        </div>
-                        <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                            <span class="text-sm font-semibold text-slate-700">Custom OMR Design</span>
-                            <span class="text-sm font-bold text-indigo-600">2K–5K Tk</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-12 text-center">
-                <p class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 font-medium shadow-sm transition-transform hover:scale-105">
-                    <span class="text-xl">💡</span> Per sheet cost starts from just <strong class="text-emerald-700 font-extrabold text-lg">0.15 Tk</strong>
-                </p>
-            </div>
-        </div>
-    </section>
 
     <!-- Downloads Section -->
-    <section id="downloads" class="py-20 bg-white border-t border-slate-100">
+    <section id="downloads" class="py-14 bg-white border-t border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row gap-12 items-center justify-between bg-blue-50/50 rounded-3xl p-8 md:p-12 border border-blue-100">
                 <div class="max-w-xl">
@@ -610,9 +696,9 @@
 
 
     <!-- Testimonials Section -->
-    <section class="py-24 bg-slate-50 border-t border-slate-200">
+    <section class="py-16 bg-slate-50 border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">Loved by Educators</h2>
                 <p class="text-slate-600 max-w-2xl mx-auto text-lg">See what school administrators have to say about Amarschool OMR.</p>
             </div>
@@ -653,9 +739,9 @@
     </section>
 
     <!-- OMR Templates Section -->
-    <section id="omr-templates" class="py-24 bg-slate-50 border-t border-slate-100">
+    <section id="omr-templates" class="py-16 bg-slate-50 border-t border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-10">
                 <span class="text-blue-600 font-bold tracking-wider uppercase text-sm mb-4 block">Design Gallery</span>
                 <h2 class="text-3xl md:text-5xl font-bold font-outfit text-slate-900 mb-6">OMR Template Designs</h2>
                 <p class="text-lg text-slate-600 max-w-2xl mx-auto">Explore and download our ready-made OMR sheet templates customized for AmarSchool's advanced grading engine.</p>
@@ -695,9 +781,9 @@
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="py-24 bg-white border-t border-slate-100">
+    <section id="faq" class="py-16 bg-white border-t border-slate-100">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-4xl font-bold mb-4 font-outfit text-slate-900">Frequently Asked Questions</h2>
             </div>
             <div class="space-y-6">
@@ -716,7 +802,7 @@
     <!-- Footer -->
     <footer class="bg-slate-900 pt-20 pb-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-10">
                 <!-- Branding -->
                 <div>
                     <a href="https://amarschool.co/" class="block mb-6">

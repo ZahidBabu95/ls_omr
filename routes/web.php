@@ -11,14 +11,16 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\DownloadController;
 use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\ClientLogoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('home');
 Route::post('/lead', [LandingController::class, 'storeLead'])->name('lead.store');
 Route::post('/chatbot', [ChatbotController::class, 'ask'])->name('chatbot.ask');
 Route::get('/downloads/{download}', [LandingController::class, 'downloadFile'])->name('download.file');
+Route::get('/tutorials', [LandingController::class, 'tutorials'])->name('tutorials');
 
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     // Abstracting simple CRUDs just with resourceful routes
@@ -31,6 +33,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('downloads', DownloadController::class);
     Route::resource('testimonials', TestimonialController::class);
     Route::resource('templates', \App\Http\Controllers\Admin\OmrTemplateController::class);
+    Route::resource('client-logos', ClientLogoController::class);
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+    Route::resource('tutorials', \App\Http\Controllers\Admin\TutorialController::class);
 });
 
 Route::middleware('auth')->group(function () {

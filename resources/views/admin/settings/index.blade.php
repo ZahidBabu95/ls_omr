@@ -35,21 +35,38 @@
                         </div>
                     </div>
 
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Landing Page Hero Title</label>
-                        <input type="text" name="hero_title" value="{{ $settings['hero_title'] ?? '' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all font-medium text-slate-800">
-                        <p class="text-xs text-slate-500 mt-2">This text appears at the very top of the landing page hero section.</p>
-                    </div>
-                    
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Demo Video Youtube URL</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                    <div class="md:col-span-2 mt-4">
+                        <h3 class="text-xl font-bold font-outfit text-slate-800 border-b border-slate-100 pb-3 mb-6">Hero Section Configuration</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Top Badge Text</label>
+                                <input type="text" name="hero_badge" value="{{ $settings['hero_badge'] ?? 'Smarter, Faster Examiner' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
                             </div>
-                            <input type="text" name="demo_video_url" value="{{ $settings['demo_video_url'] ?? '' }}" placeholder="https://www.youtube.com/embed/..." class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-5 py-3.5 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all font-medium text-slate-800">
+                            <div class="md:col-span-2 grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-2">Main Title Row 1</label>
+                                    <input type="text" name="hero_title" value="{{ $settings['hero_title'] ?? 'Automate Your MCQ Exam' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-2">Main Title Highlighted Row 2</label>
+                                    <input type="text" name="hero_title_highlight" value="{{ $settings['hero_title_highlight'] ?? 'Checking in Seconds' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                </div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Subtitle / Description</label>
+                                <textarea name="hero_subtitle" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">{{ $settings['hero_subtitle'] ?? 'No more manual checking. Save hours with our smart OMR solution designed to eliminate human error and accelerate results.' }}</textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Button Text</label>
+                                <input type="text" name="hero_button_text" value="{{ $settings['hero_button_text'] ?? 'Download PC Version' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Button URL / Link</label>
+                                <input type="text" name="hero_button_url" value="{{ $settings['hero_button_url'] ?? 'https://omrservice.amarschool.co/desktop-app/LSOMR_Setup.exe' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                            </div>
                         </div>
                     </div>
+                    
                     <div class="md:col-span-2 mt-6">
                         <h3 class="text-xl font-bold font-outfit text-slate-800 border-b border-slate-100 pb-3 mb-6">Header & Footer Information</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

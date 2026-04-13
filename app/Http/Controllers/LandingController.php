@@ -22,8 +22,19 @@ class LandingController extends Controller
         $downloads = Download::all();
         $testimonials = Testimonial::orderBy('order_index')->get();
         $omrTemplates = \App\Models\OmrTemplate::orderBy('order_index')->get();
+        $clientLogos = \App\Models\ClientLogo::orderBy('order_index')->get();
+        $featuredTutorial = \App\Models\Tutorial::where('is_featured', true)->first();
         
-        return view('welcome', compact('settings', 'features', 'plans', 'faqs', 'downloads', 'testimonials', 'omrTemplates'));
+        return view('welcome', compact('settings', 'features', 'plans', 'faqs', 'downloads', 'testimonials', 'omrTemplates', 'clientLogos', 'featuredTutorial'));
+    }
+
+    public function tutorials()
+    {
+        $settings = Setting::pluck('value', 'key')->toArray();
+        $tutorials = \App\Models\Tutorial::orderBy('sort_order')->get();
+        $downloads = Download::all();
+        
+        return view('tutorials', compact('settings', 'tutorials', 'downloads'));
     }
 
     public function storeLead(Request $request)

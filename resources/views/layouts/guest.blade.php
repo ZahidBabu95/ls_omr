@@ -5,13 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'AmarSchool OMR') }}</title>
-        <link rel="icon" href="https://amarschool.co/wp-content/uploads/2024/04/cropped-logo-32x32.png" sizes="32x32">
+        <title>{{ config('app.name', 'AmarSchool OMR') }} — Login</title>
+        @php $faviconSetting = \App\Models\Setting::where('key','favicon')->value('value'); @endphp
+        @if($faviconSetting)
+            <link rel="icon" href="{{ asset($faviconSetting) }}" sizes="32x32">
+        @else
+            <link rel="icon" href="https://amarschool.co/wp-content/uploads/2024/04/cropped-logo-32x32.png" sizes="32x32">
+        @endif
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -19,45 +24,123 @@
         <style>
             body { font-family: 'Inter', sans-serif; }
             h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+
+            /* Chrome/Edge Autofill Override */
+            input:-webkit-autofill,
+            input:-webkit-autofill:hover, 
+            input:-webkit-autofill:focus, 
+            input:-webkit-autofill:active {
+                -webkit-box-shadow: 0 0 0 30px rgba(255,255,255,0.95) inset !important;
+                -webkit-text-fill-color: #1e293b !important;
+                transition: background-color 5000s ease-in-out 0s;
+            }
+
+            /* Animated Gradient Background */
+            .auth-bg {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #0f172a 50%, #1e1b4b 75%, #0f172a 100%);
+                background-size: 400% 400%;
+                animation: gradientShift 15s ease infinite;
+            }
+            @keyframes gradientShift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+
+            /* Floating Orbs */
+            .orb {
+                position: absolute;
+                border-radius: 50%;
+                filter: blur(80px);
+                opacity: 0.4;
+                animation: float 20s ease-in-out infinite;
+            }
+            .orb-1 {
+                width: 400px; height: 400px;
+                background: rgba(59, 130, 246, 0.5);
+                top: -100px; left: -100px;
+                animation-delay: 0s;
+            }
+            .orb-2 {
+                width: 350px; height: 350px;
+                background: rgba(139, 92, 246, 0.4);
+                bottom: -80px; right: -80px;
+                animation-delay: -5s;
+            }
+            .orb-3 {
+                width: 250px; height: 250px;
+                background: rgba(16, 185, 129, 0.3);
+                top: 50%; right: 15%;
+                animation-delay: -10s;
+            }
+            @keyframes float {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                25% { transform: translate(30px, -40px) scale(1.1); }
+                50% { transform: translate(-20px, 20px) scale(0.95); }
+                75% { transform: translate(15px, 30px) scale(1.05); }
+            }
+
+            /* Grid pattern overlay */
+            .grid-pattern {
+                background-image: 
+                    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+                background-size: 60px 60px;
+            }
+
+            /* Glassmorphism Card */
+            .glass-card {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                box-shadow: 
+                    0 25px 50px -12px rgba(0, 0, 0, 0.4),
+                    0 0 0 1px rgba(255, 255, 255, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            }
+
+            /* Subtle entrance animation */
+            .card-entrance {
+                animation: cardEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+            @keyframes cardEnter {
+                from { opacity: 0; transform: translateY(30px) scale(0.97); }
+                to { opacity: 1; transform: translateY(0) scale(1); }
+            }
         </style>
     </head>
-    <body class="font-sans text-slate-800 antialiased bg-white selection:bg-blue-200">
-        <div class="min-h-screen flex">
-            <!-- Left Side: Login Form -->
-            <div class="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 xl:px-24">
-                <div class="mb-12">
-                    <a href="/">
-                        <img src="https://amarschool.co/wp-content/uploads/2024/04/logo.png" alt="AmarSchool" class="h-12 w-auto">
-                    </a>
-                </div>
-                
-                <div class="w-full max-w-md">
-                    {{ $slot }}
-                </div>
-                
-                <div class="mt-auto pt-16 pb-8 text-sm text-slate-500">
-                    &copy; {{ date('Y') }} AmarSchool OMR. All rights reserved.
-                </div>
+    <body class="antialiased auth-bg min-h-screen relative overflow-hidden">
+        <!-- Animated Orbs -->
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+
+        <!-- Grid Pattern Overlay -->
+        <div class="absolute inset-0 grid-pattern pointer-events-none"></div>
+
+        <!-- Main Content -->
+        <div class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-8 sm:py-12">
+            
+            <!-- Logo & Brand -->
+            <div class="mb-8 text-center card-entrance" style="animation-delay: 0s;">
+                <a href="/" class="inline-block group">
+                    <img src="https://amarschool.co/wp-content/uploads/2024/04/logo.png" alt="AmarSchool" class="h-12 sm:h-14 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity mx-auto">
+                </a>
             </div>
 
-            <!-- Right Side: Graphic/Information -->
-            <div class="hidden lg:flex w-1/2 bg-blue-600 relative overflow-hidden flex-col justify-center items-center">
-                <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-700"></div>
-                <!-- Abstract Blobs -->
-                <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl mix-blend-overlay"></div>
-                <div class="absolute bottom-10 left-10 w-72 h-72 bg-blue-300/20 rounded-full blur-3xl mix-blend-overlay"></div>
-                
-                <div class="relative z-10 px-16 text-white text-center max-w-lg">
-                    <div class="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center mx-auto mb-8 backdrop-blur-sm border border-white/20 shadow-xl">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                    </div>
-                    <h2 class="text-4xl font-bold font-outfit mb-6">Manage examinations with lightning speed</h2>
-                    <p class="text-blue-100 text-lg leading-relaxed">Join thousands of educators relying on AmarOMR to automate grading, eliminate human errors, and publish results instantly.</p>
-                </div>
-                
-                <div class="absolute bottom-0 w-full">
-                    <svg class="w-full h-32" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,250.7C1248,256,1344,288,1392,304L1440,320L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
-                </div>
+            <!-- Login Card -->
+            <div class="w-full max-w-md glass-card rounded-3xl p-8 sm:p-10 card-entrance" style="animation-delay: 0.1s;">
+                {{ $slot }}
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-8 text-center card-entrance" style="animation-delay: 0.2s;">
+                <p class="text-slate-500 text-sm font-medium">&copy; {{ date('Y') }} AmarSchool OMR. All rights reserved.</p>
+                <a href="/" class="inline-flex items-center gap-1.5 mt-3 text-slate-400 hover:text-white text-xs font-semibold transition-colors group">
+                    <svg class="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Back to Homepage
+                </a>
             </div>
         </div>
     </body>
