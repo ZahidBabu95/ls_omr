@@ -44,12 +44,12 @@
                             </div>
                             <div class="md:col-span-2 grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-bold text-slate-700 mb-2">Main Title Row 1</label>
-                                    <input type="text" name="hero_title" value="{{ $settings['hero_title'] ?? 'Automate Your MCQ Exam' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                    <label class="block text-sm font-bold text-slate-700 mb-2">Highlighted Title Row 1</label>
+                                    <input type="text" name="hero_title_highlight" value="{{ $settings['hero_title_highlight'] ?? 'LS OMR' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-slate-700 mb-2">Main Title Highlighted Row 2</label>
-                                    <input type="text" name="hero_title_highlight" value="{{ $settings['hero_title_highlight'] ?? 'Checking in Seconds' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                    <label class="block text-sm font-bold text-slate-700 mb-2">Main Title Row 2</label>
+                                    <input type="text" name="hero_title" value="{{ $settings['hero_title'] ?? 'The Next Generation of Optical Mark Recognition' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
                                 </div>
                             </div>
                             <div class="md:col-span-2">
@@ -58,7 +58,7 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-slate-700 mb-2">Button Text</label>
-                                <input type="text" name="hero_button_text" value="{{ $settings['hero_button_text'] ?? 'Download PC Version' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                <input type="text" name="hero_button_text" value="{{ $settings['hero_button_text'] ?? 'Download LS OMR' }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-slate-700 mb-2">Button URL / Link</label>

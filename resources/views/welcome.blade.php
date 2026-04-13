@@ -58,7 +58,7 @@
         .marquee-track {
             display: flex;
             width: max-content;
-            animation: marqueeScroll 30s linear infinite;
+            animation: marqueeScroll 45s linear infinite;
         }
         .marquee-track:hover {
             animation-play-state: paused;
@@ -181,8 +181,11 @@
                         {{ $settings['hero_badge'] ?? 'Smarter, Faster Examiner' }}
                     </div>
                     <h1 class="text-4xl md:text-6xl lg:text-[4rem] font-extrabold tracking-tight mb-6 text-slate-900 leading-[1.1]">
-                        {{ $settings['hero_title'] ?? 'Automate Your MCQ Exam' }}<br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{{ $settings['hero_title_highlight'] ?? 'Checking in Seconds' }}</span>
+                        <span class="relative inline-block mb-1 md:mb-3">
+                            <span class="absolute inset-0 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 blur-2xl opacity-60 animate-[pulse_3s_ease-in-out_infinite] scale-110 rounded-full z-0"></span>
+                            <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 drop-shadow-sm">{{ $settings['hero_title_highlight'] ?? 'LS OMR' }}</span>
+                        </span>
+                        <span class="block mt-2 text-3xl md:text-5xl lg:text-[3.5rem] text-slate-800">{{ $settings['hero_title'] ?? 'The Next Generation of Optical Mark Recognition' }}</span>
                     </h1>
                     <p class="mt-4 text-lg md:text-xl text-slate-600 mb-10 leading-relaxed font-medium max-w-lg">
                         {{ $settings['hero_subtitle'] ?? 'No more manual checking. Save hours with our smart OMR solution designed to eliminate human error and accelerate results.' }}
@@ -190,11 +193,11 @@
                     <div class="flex flex-col sm:flex-row gap-4">
                         <a href="{{ $settings['hero_button_url'] ?? 'https://omrservice.amarschool.co/desktop-app/LSOMR_Setup.exe' }}" class="px-8 py-4 rounded-2xl bg-blue-600 text-white font-bold hover:shadow-[0_10px_40px_rgba(37,99,235,0.4)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            {{ $settings['hero_button_text'] ?? 'Download PC Version' }}
+                            {{ $settings['hero_button_text'] ?? 'Download LS OMR' }}
                         </a>
-                        <a href="#downloads" class="px-8 py-4 rounded-2xl bg-white text-slate-700 font-bold border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
-                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            Sample Sheet
+                        <a href="#demo" class="px-8 py-4 rounded-2xl bg-white text-slate-700 font-bold border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
+                            <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                            How it works (Video)
                         </a>
                     </div>
                 </div>
@@ -274,28 +277,43 @@
 
     <!-- Client Logo Marquee Section -->
     @if($clientLogos->count() > 0)
-    <section class="py-10 bg-white border-y border-slate-100 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-            <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">Trusted by 150+ Leading Educational Institutes</p>
+    <section class="py-14 bg-white border-y border-slate-100 overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+            <p class="text-center text-[11px] md:text-sm font-extrabold text-slate-400 uppercase tracking-[0.2em]">Trusted by 150+ Leading Educational Institutes</p>
         </div>
-        <div class="relative">
-            <!-- Fade edges -->
-            <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-            <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
-            <!-- Marquee Track -->
-            <div class="marquee-track">
+        <div class="relative flex overflow-hidden group">
+            <!-- Smooth Fade Edges -->
+            <div class="absolute left-0 top-0 bottom-0 w-16 md:w-40 bg-gradient-to-r from-white to-transparent z-20 pointer-events-none"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-16 md:w-40 bg-gradient-to-l from-white to-transparent z-20 pointer-events-none"></div>
+            
+            <!-- Seamless Marquee Track -->
+            <div class="marquee-track group-hover:[animation-play-state:paused] py-4">
                 @for($i = 0; $i < 2; $i++)
-                @foreach($clientLogos as $cLogo)
-                <div class="flex items-center justify-center mx-8 sm:mx-12 shrink-0">
-                    @if($cLogo->website_url)
-                    <a href="{{ $cLogo->website_url }}" target="_blank" class="block" title="{{ $cLogo->name }}">
-                    @endif
-                        <img src="{{ asset('storage/' . $cLogo->logo_path) }}" alt="{{ $cLogo->name }}" class="h-10 sm:h-12 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-                    @if($cLogo->website_url)
-                    </a>
-                    @endif
+                <div class="flex items-center shrink-0 min-w-full justify-around gap-12 sm:gap-20 px-6 sm:px-10">
+                    <!-- Duplicate items multiple times to ensure enough track length even with low logo count -->
+                    @for($j = 0; $j < 4; $j++)
+                    @foreach($clientLogos as $cLogo)
+                    <div class="flex items-center justify-center shrink-0">
+                        @if($cLogo->website_url)
+                        <a href="{{ $cLogo->website_url }}" target="_blank" class="block group/logo relative" title="{{ $cLogo->name }}">
+                        @else
+                        <div class="block group/logo relative" title="{{ $cLogo->name }}">
+                        @endif
+                            <!-- Premium Rounded Container with Hover Animations -->
+                            <div class="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-white shadow-[0_5px_15px_rgba(0,0,0,0.04)] border border-slate-100 flex items-center justify-center p-5 sm:p-6 transition-all duration-500 ease-out group-hover/logo:scale-[1.3] group-hover/logo:shadow-[0_20px_50px_rgba(59,130,246,0.15)] group-hover/logo:border-blue-100 group-hover/logo:-translate-y-3 z-0 group-hover/logo:z-50">
+                                <!-- Glowing subtle halo on hover -->
+                                <div class="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full blur-xl opacity-0 group-hover/logo:opacity-30 transition-opacity duration-300"></div>
+                                <img src="{{ asset('storage/' . $cLogo->logo_path) }}" alt="{{ $cLogo->name }}" class="max-h-full max-w-full object-contain drop-shadow-sm transition-transform duration-500 group-hover/logo:scale-110 relative z-10">
+                            </div>
+                        @if($cLogo->website_url)
+                        </a>
+                        @else
+                        </div>
+                        @endif
+                    </div>
+                    @endforeach
+                    @endfor
                 </div>
-                @endforeach
                 @endfor
             </div>
         </div>
@@ -364,8 +382,8 @@
                                     'Result Export',
                                     'Reporting',
                                     'Support',
-                                    'Own Branding',
-                                    'Custom OMR Format'
+                                    'OMR Sheet with School Name and Logo',
+                                    'Fully Customized OMR Template'
                                 ];
                             @endphp
 
@@ -375,14 +393,14 @@
                                     <td class="px-4 md:px-5 py-3.5 border-r border-slate-100 font-semibold text-slate-600 bg-slate-50/95 backdrop-blur-md group-hover:bg-slate-100/95 sticky left-0 z-10 shadow-[4px_0_15px_rgba(0,0,0,0.03)] text-xs md:text-sm {{ $loop->last ? '' : 'border-b' }}">{{ $label }}</td>
                                     @foreach($plans as $planIndex => $plan)
                                         @php
-                                            if ($label === 'Own Branding') {
+                                            if ($label === 'OMR Sheet with School Name and Logo') {
                                                 $featureValue = '<span class="text-emerald-500 font-bold text-lg">✔</span>';
                                             } else {
                                                 $mapIndex = $featureIndex;
-                                                if ($featureIndex == 7) $mapIndex = 6; // Keep mapping 'Custom OMR Format' to db index 6
+                                                if ($featureIndex == 7) $mapIndex = 6; // Keep mapping 'Fully Customized OMR Template' to db index 6
                                                 $featureValue = $plan->features_json[$mapIndex] ?? '-';
                                                 
-                                                if ($label === 'Custom OMR Format' && (str_contains($featureValue, '✖') || str_contains($featureValue, 'u2716') || $featureValue === '-')) {
+                                                if ($label === 'Fully Customized OMR Template' && (str_contains($featureValue, '✖') || str_contains($featureValue, 'u2716') || $featureValue === '-')) {
                                                     $featureValue = '<div class="flex flex-col gap-2"><div class="flex items-center gap-1.5"><span class="text-rose-400 font-bold text-sm">✖</span><span class="text-[11px] md:text-xs font-semibold text-slate-500">Not Included</span></div><a href="https://amarschool.co/contact-us/" target="_blank" class="block w-full max-w-[120px] md:max-w-[140px] text-center border border-indigo-100 bg-gradient-to-b from-indigo-50/50 to-indigo-50 hover:border-indigo-300 hover:shadow-sm rounded-xl p-2 md:p-2.5 transition-all group cursor-pointer"><span class="block text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-indigo-400 group-hover:text-indigo-600 transition-colors mb-1 truncate">+ Custom Template</span><span class="block text-[10px] md:text-xs font-extrabold text-indigo-700 truncate">2K - 5K Tk</span></a></div>';
                                                 }
                                             }

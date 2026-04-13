@@ -1,7 +1,7 @@
 # Last Session Summary
 
-## 🎯 Main Objective: Premium UI Redesign & Tutorials Integration
-The primary goal of this session was to drastically improve the aesthetic appeal and mobile responsiveness of the AmarSchool OMR SaaS landing page, and to build a robust, dynamic YouTube Video Tutorials architecture.
+## 🎯 Main Objective: Premium UI Redesign, Tutorials Integration & Live Deployment
+The primary goal of this session was to drastically improve the aesthetic appeal and mobile responsiveness of the AmarSchool OMR SaaS landing page, build a robust YouTube Video Tutorials architecture, and successfully deploy all changes to the cPanel production server.
 
 ## ✅ Key Achievements & Tasks Completed:
 
@@ -25,3 +25,8 @@ The primary goal of this session was to drastically improve the aesthetic appeal
    * **Robust Regex URL Parsing**: Implemented intelligent regex logic inside the `Tutorial` Model (`getEmbedUrlAttribute`) to correctly convert raw YouTube URLs (`youtu.be`, `watch?v=`, `/shorts/`, or playlists) into valid `iframe` embed URLs natively.
    * **Featured Demo Integration**: Updated the Landing Page Demo Section to directly stream the "Featured Tutorial" selected from the admin panel, rather than relying on a static settings field. 
    * **Knowledge Base UI**: Constructed a polished, responsive `/tutorials` public page featuring a modern layout with dedicated video-card containers.
+
+5. **Production Deployment & Server Debugging (cPanel):**
+   * **Git Synchronization**: Successfully committed all codebase updates, built the Vite assets for production (`npm run build`), and pushed them to GitHub.
+   * **Composer Dependency Conflict Resolution**: Walked through resolving a PHP version mismatch (PHP 8.4 local vs PHP 8.3 server) by effectively running `composer update` on the cPanel terminal.
+   * **Spatie Roles Troubleshooting**: Fixed an Admin Dashboard login lockout on the live server. When the initial Spatie Permission package was merged, the primary user lost the correct session role. Used the custom `RoleSeeder` via cPanel terminal to restore full `super_admin` access to the main administrative account.
