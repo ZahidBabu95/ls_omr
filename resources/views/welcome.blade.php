@@ -289,9 +289,10 @@
             <!-- Seamless Marquee Track -->
             <div class="marquee-track group-hover:[animation-play-state:paused] py-4">
                 @for($i = 0; $i < 2; $i++)
-                <div class="flex items-center shrink-0 min-w-full justify-around gap-12 sm:gap-20 px-6 sm:px-10">
+                <!-- pr-6 sm:pr-10 perfectly matches the flex gap to create a 100% seamless transition between track blocks -->
+                <div class="flex items-center shrink-0 gap-6 sm:gap-10 pr-6 sm:pr-10">
                     <!-- Duplicate items multiple times to ensure enough track length even with low logo count -->
-                    @for($j = 0; $j < 4; $j++)
+                    @for($j = 0; $j < 6; $j++)
                     @foreach($clientLogos as $cLogo)
                     <div class="flex items-center justify-center shrink-0">
                         @if($cLogo->website_url)
@@ -299,11 +300,11 @@
                         @else
                         <div class="block group/logo relative" title="{{ $cLogo->name }}">
                         @endif
-                            <!-- Premium Rounded Container with Hover Animations -->
-                            <div class="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-white shadow-[0_5px_15px_rgba(0,0,0,0.04)] border border-slate-100 flex items-center justify-center p-5 sm:p-6 transition-all duration-500 ease-out group-hover/logo:scale-[1.3] group-hover/logo:shadow-[0_20px_50px_rgba(59,130,246,0.15)] group-hover/logo:border-blue-100 group-hover/logo:-translate-y-3 z-0 group-hover/logo:z-50">
+                            <!-- Premium Rounded Container with Ultra Smooth Hover Animations -->
+                            <div class="relative w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-white shadow-[0_4px_15px_rgba(0,0,0,0.03)] border border-slate-100 flex items-center justify-center p-4 sm:p-5 transition-all duration-[600ms] ease-out group-hover/logo:scale-[1.15] group-hover/logo:shadow-[0_20px_40px_rgba(59,130,246,0.15)] group-hover/logo:border-blue-100 group-hover/logo:-translate-y-2 z-0 group-hover/logo:z-50">
                                 <!-- Glowing subtle halo on hover -->
-                                <div class="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full blur-xl opacity-0 group-hover/logo:opacity-30 transition-opacity duration-300"></div>
-                                <img src="{{ asset('storage/' . $cLogo->logo_path) }}" alt="{{ $cLogo->name }}" class="max-h-full max-w-full object-contain drop-shadow-sm transition-transform duration-500 group-hover/logo:scale-110 relative z-10">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-blue-400 to-indigo-400 rounded-full blur-xl opacity-0 group-hover/logo:opacity-25 transition-opacity duration-[600ms]"></div>
+                                <img src="{{ asset('storage/' . $cLogo->logo_path) }}" alt="{{ $cLogo->name }}" class="max-h-full max-w-full object-contain drop-shadow-sm transition-transform duration-[600ms] group-hover/logo:scale-105 relative z-10">
                             </div>
                         @if($cLogo->website_url)
                         </a>
@@ -327,7 +328,7 @@
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 text-sm font-semibold mb-4">
                     <span class="w-2 h-2 rounded-full bg-indigo-600"></span> Pricing
                 </div>
-                <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900">OMR Solution Pricing Plans</h2>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 font-outfit text-slate-900"><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">LS OMR</span> Solution Pricing Plans</h2>
                 <p class="text-slate-600 max-w-2xl mx-auto text-lg">(For Non-ERP Clients)</p>
             </div>
             
